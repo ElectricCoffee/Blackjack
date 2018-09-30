@@ -11,5 +11,5 @@ mod commands;
 fn main() {
     let mut rng = rand::thread_rng();
     let mut state = game::State::new(100, &mut rng);
-    game::play(&mut state);
+    game::play(&mut state, &mut rng);
 }

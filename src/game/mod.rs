@@ -1,21 +1,23 @@
 use std::io::{self, Write};
 mod state;
 pub use self::state::State;
+use rand::ThreadRng;
 
 use parser;
 use commands::Command::*;
-use cards::Card;
+use cards::{Card, Deck};
 
 #[derive(PartialEq, Eq)]
 enum Flow {
-    Win, Loss, Continue
+    Win, Loss, Continue, GameOver,
 }
 
 /// Plays the game
-pub fn play(state: &mut State) {
+pub fn play(state: &mut State, rng: &mut ThreadRng) {
+    let mut guard = true;
     println!("Type \"help\" for a list of commands.");
     print_status(state);
-    loop {
+    while guard {
         let input = prompt("> ").expect("std::io failed.");
         if let Some(result) = parser::parse_input(&input) {
             let flow = match result {
@@ -27,6 +29,8 @@ pub fn play(state: &mut State) {
                 Help       => print_help(),
                 Quit       => return,
             };
+
+            guard = handle_winning(state, flow, rng);
         }
 
         if state.player_hands.is_empty() && state.current_bid > 0 {
@@ -182,4 +186,32 @@ fn handle_split(state: &mut State) -> Flow {
 fn handle_double(state: &mut State) -> Flow {
     panic!("Double down unhandled");
     Flow::Continue
+}
+
+fn handle_winning(state: &mut State, flow: Flow, rng: &mut ThreadRng) -> bool {
+    let pot = state.current_bid;
+
+    match flow {
+        Flow::Win => {
+            println!("You win the hand!");
+            state.earnings += pot * 2;
+            state.current_bid = 0;
+            state.deck = Deck::new().shuffled(rng);
+            true
+        }
+        Flow::Loss => {
+            println!("You lose the hand.");
+            // do nothing with the pot, the dealer is assumed to have infinite money
+            state.current_bid = 0;
+            state.deck = Deck::new().shuffled(rng);
+            true
+        }
+        Flow::GameOver => {
+            println!("Game Over.");
+            false
+        }
+        Flow::Continue => {
+            true
+        }
+    }
 }
