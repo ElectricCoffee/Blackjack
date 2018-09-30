@@ -179,12 +179,12 @@ fn handle_hit(state: &mut State, id: usize) -> Flow {
 
 // split the hand in two
 fn handle_split(state: &mut State) -> Flow {
-    panic!("Split unhandled");
+    println!("Split unhandled");
     Flow::Continue
 }
 
 fn handle_double(state: &mut State) -> Flow {
-    panic!("Double down unhandled");
+    println!("Double down unhandled");
     Flow::Continue
 }
 
