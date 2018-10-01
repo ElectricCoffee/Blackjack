@@ -21,13 +21,13 @@ pub fn play(state: &mut State, rng: &mut ThreadRng) {
         let input = prompt("> ").expect("std::io failed.");
         if let Some(result) = parser::parse_input(&input) {
             let flow = match result {
-                Bid(bid)   => handle_bid(state, bid),
-                Hit(id)    => handle_hit(state, id),
-                Stand      => handle_stand(state),
-                Split      => handle_split(state),
-                DoubleDown => handle_double(state),
-                Help       => print_help(),
-                Quit       => return,
+                Bid(bid, id) => handle_bid(state, bid, id),
+                Hit(id)      => handle_hit(state, id),
+                Stand        => handle_stand(state),
+                Split        => handle_split(state),
+                DoubleDown   => handle_double(state),
+                Help         => print_help(),
+                Quit         => return,
             };
 
             guard = handle_winning(state, flow, rng);
@@ -116,7 +116,8 @@ fn hand_total(hand: &[Card]) -> (u32, u32) {
 /// Handles bidding.
 /// 
 /// If the given amount is larger than the player's earnings, do nothing.
-fn handle_bid(state: &mut State, amount: u64) -> Flow {
+fn handle_bid(state: &mut State, amount: u64, hand_index: usize) -> Flow {
+    // TODO: deal with per-hand earnings
     if state.earnings - amount > 0 {
         state.earnings -= amount;
         state.current_bid += amount;
