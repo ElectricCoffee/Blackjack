@@ -1,16 +1,15 @@
-use std::io::{self, Write};
 mod state;
+mod flow;
+
 pub use self::state::State;
+pub use self::flow::{Winning, Flow};
+
+use std::io::{self, Write};
 use rand::ThreadRng;
 
 use parser;
 use commands::Command::*;
 use cards::{Card, Deck};
-
-#[derive(PartialEq, Eq)]
-enum Flow {
-    Win, Loss, Continue, GameOver,
-}
 
 /// Plays the game
 pub fn play(state: &mut State, rng: &mut ThreadRng) {
