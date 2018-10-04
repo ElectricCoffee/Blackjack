@@ -7,12 +7,12 @@ pub struct State {
     pub player_hands: Vec<Vec<Card>>,
     pub player_wins: Vec<Winning>,
     pub dealer_hand: Vec<Card>,
-    pub current_bids: Vec<u64>,
-    pub earnings: u64,
+    pub current_bids: Vec<i64>,
+    pub earnings: i64,
 }
 
 impl State {
-    pub fn new(money: u64, rng: &mut ThreadRng) -> State {
+    pub fn new(money: i64, rng: &mut ThreadRng) -> State {
         State { 
             deck: Deck::new().shuffled(rng),
             player_hands: vec![],

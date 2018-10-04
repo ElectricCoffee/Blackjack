@@ -121,7 +121,7 @@ fn hand_total(hand: &[Card]) -> (u32, u32) {
 /// Handles bidding.
 /// 
 /// If the given amount is larger than the player's earnings, do nothing.
-fn handle_bid(state: &mut State, amount: u64, hand_index: usize) {
+fn handle_bid(state: &mut State, amount: i64, hand_index: usize) {
     if hand_index > state.current_bids.len() {
         println!("You cannot bid to a hand you do not possess.");
     }

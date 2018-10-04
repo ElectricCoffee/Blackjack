@@ -1,6 +1,6 @@
 #[derive(Debug)]
 pub enum Command {
-    Bid(u64, usize),
+    Bid(i64, usize),
     Hit(usize),
     Split(usize),
     Stand,
