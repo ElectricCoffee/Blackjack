@@ -40,6 +40,10 @@ impl Card {
             _ => panic!("Unknown card value"), 
         }
     }
+
+    pub fn symbolic_value(&self) -> char {
+        self.value
+    }
 }
 
 impl fmt::Display for Card {
