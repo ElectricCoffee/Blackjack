@@ -184,7 +184,7 @@ fn handle_hit(state: &mut State, id: usize) {
 // split the hand in two
 fn handle_split(state: &mut State, idx: usize) {
     let first_bid = state.current_bids[idx];
-    let mut old_hand = state.player_hands[idx];
+    let mut old_hand = state.player_hands[idx].clone();
 
     // ensure enough money
     if state.earnings - first_bid < 0 {
@@ -218,6 +218,7 @@ fn handle_split(state: &mut State, idx: usize) {
 
     // add the new hand to the vec of player hands
     state.player_hands.push(new_hand);
+    state.player_hands[idx] = old_hand; // overwrite the old hand
 
     // move a bit of the player's earnings into the new hand's pot.
     state.earnings -= first_bid;
