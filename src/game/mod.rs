@@ -9,7 +9,7 @@ use rand::ThreadRng;
 
 use parser;
 use commands::Command::*;
-use cards::{Card, Deck};
+use cards::{Card};
 
 /// Plays the game
 pub fn play(state: &mut State, rng: &mut ThreadRng) {
@@ -140,7 +140,8 @@ fn handle_bid(state: &mut State, amount: i64, hand_index: usize) {
 fn handle_stand(state: &mut State) {
     state.player_wins = Vec::with_capacity(state.player_hands.len()); // ensure it's zeroed out
     let totals = state.player_hands.iter().map(|hand| hand_total(&hand));
-    let mut dealer_total = (0, 0);
+    let mut dealer_total;
+    
     loop {
         dealer_total = hand_total(&state.dealer_hand);
         if dealer_total.0 >= 17 { break; }
@@ -225,7 +226,7 @@ fn handle_split(state: &mut State, idx: usize) {
     state.current_bids.push(first_bid);
 }
 
-fn handle_double(state: &mut State) {
+fn handle_double(_state: &mut State) {
     println!("Double down not yet implemented");
     //Flow::Continue
 }
