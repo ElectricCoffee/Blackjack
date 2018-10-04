@@ -184,15 +184,44 @@ fn handle_hit(state: &mut State, id: usize) {
 // split the hand in two
 fn handle_split(state: &mut State, idx: usize) {
     let first_bid = state.current_bids[idx];
+    let mut old_hand = state.player_hands[idx];
 
+    // ensure enough money
     if state.earnings - first_bid < 0 {
         println!("You cannot split the hand, your pot is too small.");
         return;
     }
 
-    // TODO: handle popping a card, pushing it onto the new hand and adding two new cards.
+    // ensure cards match
+    if old_hand[0].symbolic_value() != old_hand[1].symbolic_value() {
+        println!("Can't split a hand with different card values.");
+        return;
+    }
 
-    Flow::Continue
+    // ensure hand size
+    if old_hand.len() != 2 {
+        println!("Can't split a hand of size {}.", old_hand.len());
+        return;
+    }
+
+    // we already know the hand is large enough, so it's safe to pop
+    let card = old_hand.pop().unwrap(); // move one of the cards to the new hand
+    let mut new_hand = vec![card];
+
+    // we just assume the deck has enough cards
+    let card1 = state.deck.deal_card().expect("Ran out of cards in deck.");
+    let card2 = state.deck.deal_card().expect("Ran out of cards in deck.");
+
+    // add the cards from the deck to the hands
+    old_hand.push(card1);
+    new_hand.push(card2);
+
+    // add the new hand to the vec of player hands
+    state.player_hands.push(new_hand);
+
+    // move a bit of the player's earnings into the new hand's pot.
+    state.earnings -= first_bid;
+    state.current_bids.push(first_bid);
 }
 
 fn handle_double(state: &mut State) {
