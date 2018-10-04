@@ -226,8 +226,8 @@ fn handle_split(state: &mut State, idx: usize) {
 }
 
 fn handle_double(state: &mut State) {
-    println!("Double down unhandled");
-    Flow::Continue
+    println!("Double down not yet implemented");
+    //Flow::Continue
 }
 
 fn handle_winning(state: &mut State, rng: &mut ThreadRng) -> Flow {
