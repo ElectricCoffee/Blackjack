@@ -5,7 +5,7 @@ use std::str::FromStr;
 // all the regular expressions used in the program
 lazy_static! {
     static ref BID: Regex    = Regex::new(r"(?i)bid ([0-9]+) ([0-9]*)?").unwrap();
-    static ref SPLIT: Regex  = Regex::new(r"(?i)split").unwrap();
+    static ref SPLIT: Regex  = Regex::new(r"(?i)split ([0-9]*)?").unwrap();
     static ref HIT: Regex    = Regex::new(r"(?i)hit( [0-9]*)?").unwrap();
     static ref QUIT: Regex   = Regex::new(r"(?i)quit").unwrap();
     static ref HELP: Regex   = Regex::new(r"(?i)help").unwrap();
@@ -36,7 +36,7 @@ pub fn parse_input(input: &str) -> Option<Command> {
             .map(Hit) // wrap it in a Hit
             .or(Some(Hit(1))) // if None, return Hit(1)
     } else if SPLIT.is_match(input) {
-        Some(Split)
+        Some(Split) // todo handle input
     } else if QUIT.is_match(input) {
         Some(Quit)
     } else if HELP.is_match(input) {
