@@ -76,7 +76,7 @@ fn print_status(state: &State) {
 
     if !state.current_bids.is_empty() {
         print!("Pot: ");
-        for bid in state.current_bids {
+        for bid in state.current_bids.iter() {
             println!("{} ", bid);
         }
         println!("");
