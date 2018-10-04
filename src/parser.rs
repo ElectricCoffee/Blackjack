@@ -36,7 +36,11 @@ pub fn parse_input(input: &str) -> Option<Command> {
             .map(Hit) // wrap it in a Hit
             .or(Some(Hit(1))) // if None, return Hit(1)
     } else if SPLIT.is_match(input) {
-        Some(Split) // todo handle input
+        SPLIT.captures(input)
+            .and_then(|cap| cap.get(1))
+            .and_then(parse_match)
+            .map(Split)
+            .or(Some(Split(1)))
     } else if QUIT.is_match(input) {
         Some(Quit)
     } else if HELP.is_match(input) {
