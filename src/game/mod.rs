@@ -232,25 +232,29 @@ fn handle_double(state: &mut State) {
 
 fn handle_winning(state: &mut State, rng: &mut ThreadRng) -> Flow {
     // if any hand is still playing, just return
-    if state.player_wins.iter().any(|&w| w == Winning::Playing) {
+    if state.player_wins.iter().any(|w| *w == Winning::Playing) {
         return Flow::Continue;
     }
 
     let mut winnings = state.earnings;
-    let pots = state.current_bids;
+    { // local scope for borrowing the pots
+        let ref pots = state.current_bids;
 
-    for (i, winning) in state.player_wins.iter().enumerate() {
-        match winning {
-            Winning::Win => {
-                println!("You win on hand {}!", i + 1);
-                winnings += pots[i] * 2;
-            }
-            Winning::Loss => {
-                println!("You lose on hand {}.", i + 1);
+        for (i, winning) in state.player_wins.iter().enumerate() {
+            match winning {
+                Winning::Win => {
+                    println!("You win on hand {}!", i + 1);
+                    winnings += pots[i] * 2;
+                },
+
                 // do nothing with the pot, the dealer is assumed to have infinite money
+                Winning::Loss => println!("You lose on hand {}.", i + 1),
+                
+                // do nothing
+                Winning::Playing => continue,
             }
         }
-    }
+    } // pots goes out of scope here
 
     if winnings == 0 {
         return Flow::GameOver;
