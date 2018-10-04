@@ -62,8 +62,8 @@ fn prompt(input: &str) -> io::Result<String> {
 fn print_help() {
     println!("Available commands:");
     println!("<> = value, [] = optional value");
-    println!("* \"bid <amount>\" -- bid the given amount.");
-    println!("* \"split\" -- split the cards.");
+    println!("* \"bid <amount> [index]\" -- bid the given amount.");
+    println!("* \"split [index]\" -- split the cards.");
     println!("* \"hit [index]\" -- let the dealer deal another card.");
     println!("* \"help\" -- print this help.");
     println!("* \"quit\" -- quit the game.");
