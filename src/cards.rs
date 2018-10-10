@@ -57,7 +57,11 @@ impl fmt::Display for Card {
             Diamonds => "♦️",
         };
 
-        let value = if self.value == 'X' { "10".into() } else { self.value.to_string() };
+        let value = if self.value == 'X' {
+            "10".into() 
+        } else { 
+            self.value.to_string() 
+        };
 
         write!(f, "{} {}", suit, value)
     }
