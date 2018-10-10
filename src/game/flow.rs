@@ -1,9 +1,9 @@
-#[derive(PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum Flow {
     Continue, GameOver,
 }
 
-#[derive(PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum Winning {
     Win, Loss, Playing,
 }
