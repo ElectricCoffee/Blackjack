@@ -4,8 +4,8 @@ use std::str::FromStr;
 
 // all the regular expressions used in the program
 lazy_static! {
-    static ref BID: Regex    = Regex::new(r"(?i)bid ([0-9]+) ([0-9]*)?").unwrap();
-    static ref SPLIT: Regex  = Regex::new(r"(?i)split ([0-9]*)?").unwrap();
+    static ref BID: Regex    = Regex::new(r"(?i)bid ([0-9]+)( [0-9]*)?").unwrap();
+    static ref SPLIT: Regex  = Regex::new(r"(?i)split( [0-9]*)?").unwrap();
     static ref HIT: Regex    = Regex::new(r"(?i)hit( [0-9]*)?").unwrap();
     static ref STAND: Regex  = Regex::new(r"(?i)stand").unwrap();
     static ref QUIT: Regex   = Regex::new(r"(?i)quit").unwrap();
