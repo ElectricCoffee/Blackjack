@@ -138,10 +138,13 @@ fn handle_bid(state: &mut State, amount: i64, hand_index: usize) {
 /// 
 /// Stop bidding and have the dealer play their hand.
 fn handle_stand(state: &mut State) {
-    state.player_wins = Vec::with_capacity(state.player_hands.len()); // ensure it's zeroed out
     let totals = state.player_hands.iter().map(|hand| hand_total(&hand));
     let mut dealer_total;
-    
+
+    if state.player_hands.len() > state.player_wins.len() {
+        panic!("You fucked up! You have more hands than winnings");
+    }
+
     loop {
         dealer_total = hand_total(&state.dealer_hand);
         if dealer_total.0 >= 17 { break; }
