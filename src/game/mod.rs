@@ -223,6 +223,7 @@ fn handle_split(state: &mut State, idx: usize) {
     // add the new hand to the vec of player hands
     state.player_hands.push(new_hand);
     state.player_hands[idx] = old_hand; // overwrite the old hand
+    state.player_wins.push(Winning::Playing);
 
     // move a bit of the player's earnings into the new hand's pot.
     state.earnings -= first_bid;
