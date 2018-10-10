@@ -15,8 +15,8 @@ use cards::{Card};
 pub fn play(state: &mut State, rng: &mut ThreadRng) {
     let mut guard = Flow::Continue;
     println!("Type \"help\" for a list of commands.");
-    print_status(state);
     while guard == Flow::Continue {
+        print_status(state);
         let input = prompt("> ").expect("std::io failed.");
         if let Some(result) = parser::parse_input(&input) {
             match result {
@@ -30,6 +30,8 @@ pub fn play(state: &mut State, rng: &mut ThreadRng) {
             }
 
             guard = handle_winning(state, rng);
+        } else {
+            println!("{} is not a vaid command", input);
         }
 
         if state.player_hands.is_empty() && state.current_bids.iter().any(|&bid| bid > 0) {
@@ -42,8 +44,6 @@ pub fn play(state: &mut State, rng: &mut ThreadRng) {
             let card = state.deck.deal_card().unwrap();
             state.dealer_hand.push(card);
         }
-
-        print_status(state);
     }
 }
 
@@ -125,7 +125,7 @@ fn handle_bid(state: &mut State, amount: i64, hand_index: usize) {
     if hand_index > state.current_bids.len() {
         println!("You cannot bid to a hand you do not possess.");
     }
-    // TODO: deal with per-hand earnings
+    
     if state.earnings - amount >= 0 {
         state.earnings -= amount;
         state.current_bids[hand_index] += amount;
